@@ -3,9 +3,10 @@
     "type": "module",
     "scripts": {
         "build": "vite build",
-        "dev": "run-p dev:frontend dev:backend",
+        "dev": "run-p dev:frontend dev:mail",
         "dev:frontend": "vite",
-        "dev:backend": "php artisan serve"
+        "dev:backend": "php artisan serve",
+        "dev:mail": "mail-server\\mailpit.exe"
     },
     "devDependencies": {
         "@prettier/plugin-php": "^0.22.2",

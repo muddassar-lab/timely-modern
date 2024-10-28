@@ -10,6 +10,9 @@ export default defineConfig({
     }),
     react(),
   ],
+  server: {
+    host: 'timely-modern.test'
+  },
   resolve: {
     alias: {
       '@': '/resources/js',

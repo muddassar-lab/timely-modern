@@ -52,10 +52,8 @@ export default function Register() {
     }
   })
 
-  const watcher = form.hookForm.watch()
-
   return (
-    <GuestLayout title='Register'>
+    <GuestLayout linkHref='/login' linkTitle='Login' title={"Register"} header={"Create an Account"} description='Create an account to access our services'>
       <FormProvider {...form.hookForm}>
         <FormControlledInput
           control={form.hookForm.control}
@@ -88,7 +86,7 @@ export default function Register() {
           label='Confirm Password'
         />
         <div className='flex justify-end'>
-          <Button disabled={form.inertiaForm.processing} onClick={form.submit} size={"lg"}>Register</Button>
+          <Button disabled={form.disabled} onClick={form.submit} className='w-full'>Register</Button>
         </div>
       </FormProvider>
 

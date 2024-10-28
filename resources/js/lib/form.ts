@@ -61,6 +61,7 @@ const useCustomForm = <S extends z.ZodSchema>({ schema, values, callback }: Prop
         submit,      // Function to submit the form
         inertiaForm, // Inertia form instance
         hookForm,    // React Hook Form instance
+        disabled: inertiaForm.processing || !hookForm.formState.isValid
     };
 };
 

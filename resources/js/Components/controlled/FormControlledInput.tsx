@@ -8,6 +8,7 @@ interface Props<T extends FieldValues> {
     label: string
     placeholder?: string
     helperText?: string
+    disabled?: boolean
 }
 
 const FormControlledInput = <T extends FieldValues>(
@@ -16,7 +17,8 @@ const FormControlledInput = <T extends FieldValues>(
         name,
         label,
         placeholder,
-        helperText
+        helperText,
+        disabled = false
     }: Props<T>
 ) => {
     return (
@@ -27,7 +29,7 @@ const FormControlledInput = <T extends FieldValues>(
                 <FormItem>
                     <FormLabel>{label}</FormLabel>
                     <FormControl>
-                        <Input placeholder={placeholder} {...field} />
+                        <Input placeholder={placeholder} disabled={disabled} {...field} />
                     </FormControl>
                     {
                         helperText && (

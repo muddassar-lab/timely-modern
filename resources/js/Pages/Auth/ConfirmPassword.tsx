@@ -7,54 +7,40 @@ import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
+import useCustomForm from '@/lib/form';
+import { z } from 'zod';
+import GuestLayout from '@/Layouts/GuestLayout';
+import { FormProvider } from 'react-hook-form';
+import FormControlledInput from '@/Components/controlled/FormControlledInput';
+import { Button } from '@/Components/ui/button';
+
+const schema = z.object({
+  password: z.string().min(1, { message: "Password is required" })
+})
 
 export default function ConfirmPassword() {
   const route = useRoute();
-  const form = useForm({
-    password: '',
+  const form = useCustomForm({
+    schema,
+    values: {
+      password: ''
+    },
+    callback: (_, inertiaForm) => {
+      inertiaForm.post(route('password.confirm'));
+    }
   });
 
-  function onSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    form.post(route('password.confirm'), {
-      onFinish: () => form.reset(),
-    });
-  }
-
   return (
-    <AuthenticationCard>
-      <Head title="Secure Area" />
-
-      <div className="mb-4 text-sm text-gray-600 dark:text-gray-400">
-        This is a secure area of the application. Please confirm your password
-        before continuing.
-      </div>
-
-      <form onSubmit={onSubmit}>
-        <div>
-          <InputLabel htmlFor="password">Password</InputLabel>
-          <TextInput
-            id="password"
-            type="password"
-            className="mt-1 block w-full"
-            value={form.data.password}
-            onChange={e => form.setData('password', e.currentTarget.value)}
-            required
-            autoComplete="current-password"
-            autoFocus
-          />
-          <InputError className="mt-2" message={form.errors.password} />
-        </div>
-
-        <div className="flex justify-end mt-4">
-          <PrimaryButton
-            className={classNames('ml-4', { 'opacity-25': form.processing })}
-            disabled={form.processing}
-          >
-            Confirm
-          </PrimaryButton>
-        </div>
-      </form>
-    </AuthenticationCard>
+    <GuestLayout title='Secure Area' header='Secure Area' description='This is a secure area of the application. Please confirm your password before continuing.'>
+      <FormProvider {...form.hookForm}>
+        <FormControlledInput
+          label='Password'
+          name='password'
+          placeholder='Password'
+          control={form.hookForm.control}
+        />
+      </FormProvider>
+      <Button disabled={form.disabled} onClick={form.submit}>Confirm</Button>
+    </GuestLayout>
   );
 }

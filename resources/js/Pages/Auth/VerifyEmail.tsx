@@ -21,7 +21,7 @@ export default function VerifyEmail({ status }: Props) {
   }
 
   return (
-    <GuestLayout title='Email Verification'>
+    <GuestLayout linkHref={route('logout')} linkMethod={"post"} linkTitle='Logout' title='Email Verification' header='Verify your email address' description='Verify your email address to complete registration.'>
       <div className="mb-4 text-sm">
         Before continuing, could you verify your email address by clicking on
         the link we just emailed to you? If you didn't receive the email, we
@@ -33,10 +33,7 @@ export default function VerifyEmail({ status }: Props) {
           provided during registration.
         </div>
       )}
-      <div className='flex justify-end'>
-        <Button size={"lg"} onClick={() => form.post(route("logout"))} variant={"link"}>Logout</Button>
-        <Button size={"lg"} onClick={onSubmit}>Send Verification Link</Button>
-      </div>
+      <Button size={"lg"} className='w-full' onClick={onSubmit}>Send Verification Link</Button>
     </GuestLayout>
   );
 }

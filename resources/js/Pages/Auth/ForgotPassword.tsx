@@ -7,62 +7,58 @@ import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import InputError from '@/Components/InputError';
+import GuestLayout from '@/Layouts/GuestLayout';
+import useCustomForm from '@/lib/form';
+import { z } from 'zod';
+import { FormProvider } from 'react-hook-form';
+import FormControlledInput from '@/Components/controlled/FormControlledInput';
+import { Button } from '@/Components/ui/button';
 
 interface Props {
   status: string;
 }
 
+const schema = z.object({
+  email: z.string().min(1, { message: "Email is required" }).email("Email is invalid"),
+})
+
 export default function ForgotPassword({ status }: Props) {
   const route = useRoute();
-  const form = useForm({
-    email: '',
-  });
 
-  function onSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    form.post(route('password.email'));
-  }
+  const form = useCustomForm({
+    schema,
+    values: {
+      email: ''
+    },
+    callback: (_, inertiaForm) => {
+      inertiaForm.post(route('password.email'));
+    }
+  })
 
   return (
-    <AuthenticationCard>
-      <Head title="Forgot Password" />
-
-      <div className="mb-4 text-sm text-gray-600 dark:text-gray-400">
-        Forgot your password? No problem. Just let us know your email address
+    <GuestLayout
+      title='Forgot Password'
+      header='Forgot Password'
+      description='Forgot your password? No problem. Just let us know your email address
         and we will email you a password reset link that will allow you to
-        choose a new one.
-      </div>
+        choose a new one.'>
+      {
+        status && (
+          <div className="font-medium text-sm text-green-600">
+            {status}
+          </div>
+        )
+      }
+      <FormProvider {...form.hookForm}>
+        <FormControlledInput
+          label='Email'
+          name='email'
+          placeholder='Email'
+          control={form.hookForm.control}
+        />
+      </FormProvider>
+      <Button onClick={form.submit} disabled={form.disabled}>Send Password Reset Link</Button>
+    </GuestLayout>
 
-      {status && (
-        <div className="mb-4 font-medium text-sm text-green-600 dark:text-green-400">
-          {status}
-        </div>
-      )}
-
-      <form onSubmit={onSubmit}>
-        <div>
-          <InputLabel htmlFor="email">Email</InputLabel>
-          <TextInput
-            id="email"
-            type="email"
-            className="mt-1 block w-full"
-            value={form.data.email}
-            onChange={e => form.setData('email', e.currentTarget.value)}
-            required
-            autoFocus
-          />
-          <InputError className="mt-2" message={form.errors.email} />
-        </div>
-
-        <div className="flex items-center justify-end mt-4">
-          <PrimaryButton
-            className={classNames({ 'opacity-25': form.processing })}
-            disabled={form.processing}
-          >
-            Email Password Reset Link
-          </PrimaryButton>
-        </div>
-      </form>
-    </AuthenticationCard>
   );
 }

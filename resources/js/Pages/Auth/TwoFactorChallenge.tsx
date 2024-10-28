@@ -7,100 +7,76 @@ import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import InputError from '@/Components/InputError';
+import GuestLayout from '@/Layouts/GuestLayout';
+import useCustomForm from '@/lib/form';
+import { z } from 'zod';
+import FormControlledInput from '@/Components/controlled/FormControlledInput';
+import { Button } from '@/Components/ui/button';
+import { FormProvider } from 'react-hook-form';
+
+const schema = z.object({
+  type: z.enum(['recovery_code', 'code']),
+  code: z.string().optional(),
+  recovery_code: z.string().optional(),
+}).refine(data => {
+  if (data.type === 'code') {
+    return data.code && data.code.length === 6;
+  } else if (data.type === 'recovery_code') {
+    return data.recovery_code;
+  }
+  return false;
+}, {
+  message: 'Invalid code or recovery code based on type',
+});
 
 export default function TwoFactorChallenge() {
   const route = useRoute();
-  const [recovery, setRecovery] = useState(false);
-  const form = useForm({
-    code: '',
-    recovery_code: '',
-  });
-  const recoveryCodeRef = useRef<HTMLInputElement>(null);
-  const codeRef = useRef<HTMLInputElement>(null);
+  const form = useCustomForm({
+    schema,
+    values: {
+      type: 'code',
+      code: '',
+      recovery_code: ''
+    },
+    callback: (_, inertiaForm) => {
+      inertiaForm.post(route('two-factor.login'))
+    }
+  })
 
-  function toggleRecovery(e: React.FormEvent) {
-    e.preventDefault();
-    const isRecovery = !recovery;
-    setRecovery(isRecovery);
-
-    setTimeout(() => {
-      if (isRecovery) {
-        recoveryCodeRef.current?.focus();
-        form.setData('code', '');
-      } else {
-        codeRef.current?.focus();
-        form.setData('recovery_code', '');
-      }
-    }, 100);
-  }
-
-  function onSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    form.post(route('two-factor.login'));
-  }
+  const type = form.hookForm.watch('type')
 
   return (
-    <AuthenticationCard>
-      <Head title="Two-Factor Confirmation" />
-
-      <div className="mb-4 text-sm text-gray-600 dark:text-gray-400">
-        {recovery
-          ? 'Please confirm access to your account by entering one of your emergency recovery codes.'
-          : 'Please confirm access to your account by entering the authentication code provided by your authenticator application.'}
-      </div>
-
-      <form onSubmit={onSubmit}>
-        {recovery ? (
-          <div>
-            <InputLabel htmlFor="recovery_code">Recovery Code</InputLabel>
-            <TextInput
-              id="recovery_code"
-              type="text"
-              className="mt-1 block w-full"
-              value={form.data.recovery_code}
-              onChange={e =>
-                form.setData('recovery_code', e.currentTarget.value)
-              }
-              ref={recoveryCodeRef}
-              autoComplete="one-time-code"
+    <GuestLayout
+      title='Two Factor Verification'
+      header='Two Factor Verification'
+      description={type === 'code' ? 'Enter the 6-digit code from your authenticator app' : 'Enter one of the 16-digit recovery code from your account'}
+    >
+      <FormProvider {...form.hookForm}>
+        {
+          type === 'code' && (
+            <FormControlledInput
+              label='Code'
+              name='code'
+              placeholder='Code'
+              control={form.hookForm.control}
             />
-            <InputError className="mt-2" message={form.errors.recovery_code} />
-          </div>
-        ) : (
-          <div>
-            <InputLabel htmlFor="code">Code</InputLabel>
-            <TextInput
-              id="code"
-              type="text"
-              inputMode="numeric"
-              className="mt-1 block w-full"
-              value={form.data.code}
-              onChange={e => form.setData('code', e.currentTarget.value)}
-              autoFocus
-              autoComplete="one-time-code"
-              ref={codeRef}
+          )
+        }
+        {
+          type === 'recovery_code' && (
+            <FormControlledInput
+              label='Recovery Code'
+              name='recovery_code'
+              placeholder='Code'
+              control={form.hookForm.control}
             />
-            <InputError className="mt-2" message={form.errors.code} />
-          </div>
-        )}
-
-        <div className="flex items-center justify-end mt-4">
-          <button
-            type="button"
-            className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 underline cursor-pointer"
-            onClick={toggleRecovery}
-          >
-            {recovery ? 'Use an authentication code' : 'Use a recovery code'}
-          </button>
-
-          <PrimaryButton
-            className={classNames('ml-4', { 'opacity-25': form.processing })}
-            disabled={form.processing}
-          >
-            Log in
-          </PrimaryButton>
-        </div>
-      </form>
-    </AuthenticationCard>
+          )
+        }
+      </FormProvider>
+      <Button className='w-full' disabled={form.disabled} onClick={form.submit}>Login</Button>
+      <Button variant={"ghost"} onClick={() => form.hookForm.setValue('type', type === 'code' ? 'recovery_code' : 'code')}>
+        {type === 'code' ? 'Use Recovery Code' : 'Use Code'}
+      </Button>
+    </GuestLayout>
   );
 }

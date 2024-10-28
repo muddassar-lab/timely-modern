@@ -6,6 +6,7 @@ import useCustomForm from '@/lib/form';
 import FormControlledInput from '@/Components/controlled/FormControlledInput';
 import { Form, FormProvider } from 'react-hook-form';
 import { Button } from '@/Components/ui/button';
+import { Link } from '@inertiajs/react';
 
 interface Props {
     canResetPassword: boolean;
@@ -33,7 +34,7 @@ export default function Login({ canResetPassword, status }: Props) {
     })
 
     return (
-        <GuestLayout title={"Login"}>
+        <GuestLayout linkHref='/register' linkTitle='Register' title={"Login"} header={"Login to your account"} description='You can login to your account using your email and password.'>
             <FormProvider {...form.hookForm}>
                 <FormControlledInput
                     control={form.hookForm.control}
@@ -46,7 +47,10 @@ export default function Login({ canResetPassword, status }: Props) {
                     label='Password'
                 />
                 <div className='flex justify-end'>
-                    <Button disabled={form.inertiaForm.processing} onClick={form.submit} size={"lg"}>Login</Button>
+                    <Link href={route('password.request')}>Forgot Password?</Link>
+                </div>
+                <div className='flex justify-end'>
+                    <Button disabled={form.disabled} onClick={form.submit}>Login</Button>
                 </div>
             </FormProvider>
 
