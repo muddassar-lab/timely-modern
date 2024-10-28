@@ -11,6 +11,8 @@ import { cn } from "@/lib/utils";
 import { CalendarIcon } from "lucide-react";
 import dayjs from "dayjs";
 import { DayPickerSingleProps } from "react-day-picker";
+import { DateTimePicker } from "../ui/datetime-picker";
+import { DateTimeInput } from "../ui/datetime-input";
 
 interface Props<T extends FieldValues> {
     control: Control<T>
@@ -40,38 +42,13 @@ const FormControlledDatePicker = <T extends FieldValues>(
             render={({ field }) => (
                 <FormItem className="flex flex-col">
                     <FormLabel>{label}</FormLabel>
-                    <Popover>
-                        <PopoverTrigger asChild>
-                            <FormControl>
-                                <Button
-                                    variant={"outline"}
-                                    className={cn(
-                                        "w-full pl-3 text-left font-normal",
-                                        !field.value && "text-muted-foreground"
-                                    )}
-                                >
-                                    {field.value ? (
-                                        dayjs(field.value).format("MMM D, YYYY")
-
-                                    ) : (
-                                        <span>Pick a date</span>
-                                    )}
-                                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                                </Button>
-                            </FormControl>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                            <Calendar
-                                mode={mode}
-                                selected={field.value}
-                                onSelect={field.onChange}
-                                disabled={(date) =>
-                                    date > new Date() || date < new Date("1900-01-01") || disableCallback(date)
-                                }
-                                initialFocus
-                            />
-                        </PopoverContent>
-                    </Popover>
+                    <FormControl>
+                        <DateTimePicker
+                            value={field.value}
+                            onChange={field.onChange}
+                            hideTime
+                        />
+                    </FormControl>
                     {
                         helperText && (
                             <FormDescription>
