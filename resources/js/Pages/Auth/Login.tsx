@@ -49,9 +49,7 @@ function Login({ canResetPassword, status }: Props) {
                 <div className='flex justify-end'>
                     <Link href={route('password.request')}>Forgot Password?</Link>
                 </div>
-                <div className='flex justify-end'>
-                    <Button disabled={form.disabled} onClick={form.submit}>Login</Button>
-                </div>
+                <Button disabled={form.disabled} onClick={form.submit}>Login</Button>
             </FormProvider>
         </>
     );

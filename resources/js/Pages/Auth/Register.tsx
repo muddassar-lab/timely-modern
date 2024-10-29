@@ -10,7 +10,7 @@ import { Button } from '@/Components/ui/button';
 import FormControlledDatePicker from '@/Components/controlled/FormControlledDatePicker';
 
 const schema = z.object({
-  name: z.string({ required_error: "Name is required" }).max(255, { message: "Name can be at most 255 characters" }),
+  name: z.string().min(1, { message: "Name is required" }).max(255, { message: "Name can be at most 255 characters" }),
   date_of_birth: z.date({ required_error: 'Date of birth is required' }).nullable(),
   email: z
     .string({ required_error: "Email is required" })
@@ -85,9 +85,7 @@ function Register() {
           name={"password_confirmation"}
           label='Confirm Password'
         />
-        <div className='flex justify-end'>
-          <Button disabled={form.disabled} onClick={form.submit} className='w-full'>Register</Button>
-        </div>
+        <Button disabled={form.disabled} onClick={form.submit} className='w-full'>Register</Button>
       </FormProvider>
 
     </>
