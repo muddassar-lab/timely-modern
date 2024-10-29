@@ -29,7 +29,7 @@ const schema = z.object({
   message: 'Invalid code or recovery code based on type',
 });
 
-export default function TwoFactorChallenge() {
+function TwoFactorChallenge() {
   const route = useRoute();
   const form = useCustomForm({
     schema,
@@ -46,11 +46,7 @@ export default function TwoFactorChallenge() {
   const type = form.hookForm.watch('type')
 
   return (
-    <GuestLayout
-      title='Two Factor Verification'
-      header='Two Factor Verification'
-      description={type === 'code' ? 'Enter the 6-digit code from your authenticator app' : 'Enter one of the 16-digit recovery code from your account'}
-    >
+    <>
       <FormProvider {...form.hookForm}>
         {
           type === 'code' && (
@@ -77,6 +73,17 @@ export default function TwoFactorChallenge() {
       <Button variant={"ghost"} onClick={() => form.hookForm.setValue('type', type === 'code' ? 'recovery_code' : 'code')}>
         {type === 'code' ? 'Use Recovery Code' : 'Use Code'}
       </Button>
-    </GuestLayout>
+    </>
   );
 }
+
+TwoFactorChallenge.layout = (page: React.ReactNode) => (
+  <GuestLayout
+    children={page}
+    title='Two Factor Verification'
+    header='Two Factor Verification'
+    description={'Enter the code or recovery code.'}
+  />
+)
+
+export default TwoFactorChallenge;

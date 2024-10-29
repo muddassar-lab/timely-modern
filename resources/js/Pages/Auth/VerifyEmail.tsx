@@ -11,7 +11,7 @@ interface Props {
   status: string;
 }
 
-export default function VerifyEmail({ status }: Props) {
+function VerifyEmail({ status }: Props) {
   const route = useRoute();
   const form = useForm({});
   const verificationLinkSent = status === 'verification-link-sent';
@@ -21,7 +21,7 @@ export default function VerifyEmail({ status }: Props) {
   }
 
   return (
-    <GuestLayout linkHref={route('logout')} linkMethod={"post"} linkTitle='Logout' title='Email Verification' header='Verify your email address' description='Verify your email address to complete registration.'>
+    <>
       <div className="mb-4 text-sm">
         Before continuing, could you verify your email address by clicking on
         the link we just emailed to you? If you didn't receive the email, we
@@ -34,6 +34,21 @@ export default function VerifyEmail({ status }: Props) {
         </div>
       )}
       <Button size={"lg"} className='w-full' onClick={onSubmit}>Send Verification Link</Button>
-    </GuestLayout>
+    </>
   );
 }
+
+VerifyEmail.layout = (page: React.ReactNode) => (
+  <GuestLayout
+    children={page}
+    linkHref={'/logout'}
+    linkMethod={"post"}
+    linkTitle='Logout'
+    title='Email Verification'
+    header='Verify your email address'
+    description='Verify your email address to complete registration.'
+  />
+)
+
+
+export default VerifyEmail;

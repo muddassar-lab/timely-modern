@@ -18,7 +18,7 @@ const schema = z.object({
     password: z.string().min(1, { message: "Password is required" })
 })
 
-export default function Login({ canResetPassword, status }: Props) {
+function Login({ canResetPassword, status }: Props) {
     const route = useRoute();
     const form = useCustomForm({
         schema,
@@ -34,7 +34,7 @@ export default function Login({ canResetPassword, status }: Props) {
     })
 
     return (
-        <GuestLayout linkHref='/register' linkTitle='Register' title={"Login"} header={"Login to your account"} description='You can login to your account using your email and password.'>
+        <>
             <FormProvider {...form.hookForm}>
                 <FormControlledInput
                     control={form.hookForm.control}
@@ -53,8 +53,19 @@ export default function Login({ canResetPassword, status }: Props) {
                     <Button disabled={form.disabled} onClick={form.submit}>Login</Button>
                 </div>
             </FormProvider>
-
-
-        </GuestLayout>
+        </>
     );
 }
+
+Login.layout = (page: React.ReactNode) => (
+    <GuestLayout
+        children={page}
+        linkHref='/register'
+        linkTitle='Register'
+        title={"Login"}
+        header={"Login to your account"}
+        description='You can login to your account using your email and password.'
+    />
+)
+
+export default Login;

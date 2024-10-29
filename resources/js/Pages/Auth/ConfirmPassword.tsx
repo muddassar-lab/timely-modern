@@ -18,7 +18,7 @@ const schema = z.object({
   password: z.string().min(1, { message: "Password is required" })
 })
 
-export default function ConfirmPassword() {
+function ConfirmPassword() {
   const route = useRoute();
   const form = useCustomForm({
     schema,
@@ -31,7 +31,7 @@ export default function ConfirmPassword() {
   });
 
   return (
-    <GuestLayout title='Secure Area' header='Secure Area' description='This is a secure area of the application. Please confirm your password before continuing.'>
+    <>
       <FormProvider {...form.hookForm}>
         <FormControlledInput
           label='Password'
@@ -41,6 +41,13 @@ export default function ConfirmPassword() {
         />
       </FormProvider>
       <Button disabled={form.disabled} onClick={form.submit}>Confirm</Button>
-    </GuestLayout>
+    </>
   );
 }
+
+ConfirmPassword.layout = (page: React.ReactNode) => <GuestLayout
+  title='Secure Area' header='Secure Area'
+  description='This is a secure area of the application. Please confirm your password before continuing.'
+  children={page} />
+
+export default ConfirmPassword;

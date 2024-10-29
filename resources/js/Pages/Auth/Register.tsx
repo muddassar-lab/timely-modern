@@ -29,7 +29,7 @@ const schema = z.object({
 });
 
 
-export default function Register() {
+function Register() {
   const page = useTypedPage();
   const route = useRoute();
   const form = useCustomForm({
@@ -53,7 +53,7 @@ export default function Register() {
   })
 
   return (
-    <GuestLayout linkHref='/login' linkTitle='Login' title={"Register"} header={"Create an Account"} description='Create an account to access our services'>
+    <>
       <FormProvider {...form.hookForm}>
         <FormControlledInput
           control={form.hookForm.control}
@@ -90,6 +90,19 @@ export default function Register() {
         </div>
       </FormProvider>
 
-    </GuestLayout>
+    </>
   );
 }
+
+Register.layout = (page: React.ReactNode) => (
+  <GuestLayout
+    children={page}
+    linkHref='/login'
+    linkTitle='Login'
+    title={"Register"}
+    header={"Create an Account"}
+    description='Create an account to access our services'
+  />
+)
+
+export default Register;

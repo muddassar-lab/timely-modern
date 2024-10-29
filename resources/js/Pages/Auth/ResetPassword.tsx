@@ -24,7 +24,7 @@ const schema = z.object({
   message: "Password confirmation does not match password",
 });
 
-export default function ResetPassword({ token, email }: Props) {
+function ResetPassword({ token, email }: Props) {
   const route = useRoute();
   const form = useCustomForm({
     schema,
@@ -40,7 +40,7 @@ export default function ResetPassword({ token, email }: Props) {
   })
 
   return (
-    <GuestLayout title='Reset Password' header='Reset Your Password' description='Please enter your new password.'>
+    <>
       <FormProvider {...form.hookForm}>
         <FormControlledInput
           label='Email'
@@ -65,6 +65,17 @@ export default function ResetPassword({ token, email }: Props) {
       <Button disabled={form.disabled} onClick={form.submit}>
         Reset Password
       </Button>
-    </GuestLayout>
+    </>
   );
 }
+
+ResetPassword.layout = (page: React.ReactNode) => (
+  <GuestLayout
+    children={page}
+    title='Reset Password'
+    header='Reset Your Password'
+    description='Please enter your new password.'
+  />
+)
+
+export default ResetPassword;

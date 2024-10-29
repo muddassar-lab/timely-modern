@@ -35,7 +35,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'phone',
         'status',
         'password',
-        'remember_token'
+        'remember_token',
+        'date_of_birth'
     ];
 
     /**
@@ -60,7 +61,8 @@ class User extends Authenticatable implements MustVerifyEmail
             'two_factor_confirmed_at' => 'datetime',
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
-            'status' => UserStatus::class
+            'status' => UserStatus::class,
+            'date_of_birth' => 'date'
         ];
     }
 }
