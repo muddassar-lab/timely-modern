@@ -1,17 +1,17 @@
 {
-  "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
-    "moduleResolution": "node",
-    "jsx": "react-jsx",
-    "rootDir": "./resources/js",
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": false,
-    "paths": {
-      "@/*": ["./resources/js/*"]
-    },
-    "types": ["vite/client"]
-  }
+	"compilerOptions": {
+		"target": "esnext",
+		"module": "esnext",
+		"moduleResolution": "node",
+		"jsx": "react-jsx",
+		"rootDir": "./resources/js",
+		"strict": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": false,
+		"paths": {
+			"@/*": ["./resources/js/*"]
+		},
+		"types": ["vite/client"]
+	}
 }

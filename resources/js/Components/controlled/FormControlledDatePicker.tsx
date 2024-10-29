@@ -1,66 +1,51 @@
-import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Button } from "@/Components/ui/button"
-import { Calendar } from "@/Components/ui/calendar"
-import { Control, FieldValues, Path } from "react-hook-form";
 import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover"
-import { cn } from "@/lib/utils";
-import { CalendarIcon } from "lucide-react";
-import dayjs from "dayjs";
-import { DayPickerSingleProps } from "react-day-picker";
-import { DateTimePicker } from "../ui/datetime-picker";
-import { DateTimeInput } from "../ui/datetime-input";
+	FormControl,
+	FormDescription,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage
+} from '@/components/ui/form'
+import {} from '@/components/ui/popover'
+import type { Control, FieldValues, Path } from 'react-hook-form'
+import { DateTimePicker } from '../ui/datetime-picker'
 
 interface Props<T extends FieldValues> {
-    control: Control<T>
-    name: Path<T>
-    label: string
-    placeholder?: string
-    helperText?: string
-    disableCallback?: (date: Date) => boolean
-    mode?: DayPickerSingleProps["mode"]
+	control: Control<T>
+	name: Path<T>
+	label: string
+	helperText?: string
+	disabled?: boolean
 }
 
-const FormControlledDatePicker = <T extends FieldValues>(
-    {
-        control,
-        name,
-        label,
-        placeholder,
-        helperText,
-        disableCallback = () => false,
-        mode = "single"
-    }: Props<T>
-) => {
-    return (
-        <FormField
-            control={control}
-            name={name}
-            render={({ field }) => (
-                <FormItem>
-                    <FormLabel>{label}</FormLabel>
-                    <FormControl>
-                        <DateTimePicker
-                            value={field.value}
-                            onChange={field.onChange}
-                            hideTime
-                        />
-                    </FormControl>
-                    {
-                        helperText && (
-                            <FormDescription>
-                                {helperText}
-                            </FormDescription>
-                        )
-                    }
-                    <FormMessage />
-                </FormItem>
-            )}
-        />
-    )
+const FormControlledDatePicker = <T extends FieldValues>({
+	control,
+	name,
+	label,
+	helperText,
+	disabled = false
+}: Props<T>) => {
+	return (
+		<FormField
+			control={control}
+			name={name}
+			render={({ field }) => (
+				<FormItem>
+					<FormLabel>{label}</FormLabel>
+					<FormControl>
+						<DateTimePicker
+							value={field.value}
+							onChange={field.onChange}
+							hideTime
+							disabled={disabled}
+						/>
+					</FormControl>
+					{helperText && <FormDescription>{helperText}</FormDescription>}
+					<FormMessage />
+				</FormItem>
+			)}
+		/>
+	)
 }
 
 export default FormControlledDatePicker

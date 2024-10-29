@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -8,9 +7,9 @@ Route::get('/', function () {
     if (auth()->check()) {
         return redirect('/dashboard');
     }
+
     return redirect('/login');
 });
-
 
 Route::middleware([
     'auth:sanctum',

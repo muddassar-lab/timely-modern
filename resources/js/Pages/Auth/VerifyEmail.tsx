@@ -1,54 +1,53 @@
-import { Link, useForm, Head } from '@inertiajs/react';
-import classNames from 'classnames';
-import React from 'react';
-import useRoute from '@/Hooks/useRoute';
-import AuthenticationCard from '@/Components/AuthenticationCard';
-import PrimaryButton from '@/Components/PrimaryButton';
-import GuestLayout from '@/Layouts/GuestLayout';
-import { Button } from '@/Components/ui/button';
+import { Button } from '@/Components/ui/button'
+import useRoute from '@/Hooks/useRoute'
+import GuestLayout from '@/Layouts/GuestLayout'
+import { useForm } from '@inertiajs/react'
+import type React from 'react'
 
 interface Props {
-  status: string;
+	status: string
 }
 
 function VerifyEmail({ status }: Props) {
-  const route = useRoute();
-  const form = useForm({});
-  const verificationLinkSent = status === 'verification-link-sent';
+	const route = useRoute()
+	const form = useForm({})
+	const verificationLinkSent = status === 'verification-link-sent'
 
-  function onSubmit(e: React.FormEvent) {
-    form.post(route('verification.send'));
-  }
+	function onSubmit(_e: React.FormEvent) {
+		form.post(route('verification.send'))
+	}
 
-  return (
-    <>
-      <div className="mb-4 text-sm">
-        Before continuing, could you verify your email address by clicking on
-        the link we just emailed to you? If you didn't receive the email, we
-        will gladly send you another.
-      </div>
-      {verificationLinkSent && (
-        <div className="mb-4 font-medium text-sm text-green-600">
-          A new verification link has been sent to the email address you
-          provided during registration.
-        </div>
-      )}
-      <Button size={"lg"} className='w-full' onClick={onSubmit}>Send Verification Link</Button>
-    </>
-  );
+	return (
+		<>
+			<div className="mb-4 text-sm">
+				Before continuing, could you verify your email address by clicking on
+				the link we just emailed to you? If you didn't receive the email, we
+				will gladly send you another.
+			</div>
+			{verificationLinkSent && (
+				<div className="mb-4 font-medium text-sm text-green-600">
+					A new verification link has been sent to the email address you
+					provided during registration.
+				</div>
+			)}
+			<Button size={'lg'} className="w-full" onClick={onSubmit}>
+				Send Verification Link
+			</Button>
+		</>
+	)
 }
 
 VerifyEmail.layout = (page: React.ReactNode) => (
-  <GuestLayout
-    children={page}
-    linkHref={'/logout'}
-    linkMethod={"post"}
-    linkTitle='Logout'
-    title='Email Verification'
-    header='Verify your email address'
-    description='Verify your email address to complete registration.'
-  />
+	<GuestLayout
+		linkHref={'/logout'}
+		linkMethod={'post'}
+		linkTitle="Logout"
+		title="Email Verification"
+		header="Verify your email address"
+		description="Verify your email address to complete registration."
+	>
+		{page}
+	</GuestLayout>
 )
 
-
-export default VerifyEmail;
+export default VerifyEmail

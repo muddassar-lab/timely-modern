@@ -1,12 +1,11 @@
-import React from 'react';
-import Welcome from '@/Components/Welcome';
-import AppLayout from '@/Layouts/AppLayout';
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 
-export default function Dashboard() {
-  return (
-    <AuthenticatedLayout title='Dashboard'>
-
-    </AuthenticatedLayout>
-  );
+function Dashboard() {
+	return <>dashboard</>
 }
+
+Dashboard.layout = (page: React.ReactNode) => (
+	<AuthenticatedLayout title="Dashboard">{page}</AuthenticatedLayout>
+)
+
+export default Dashboard

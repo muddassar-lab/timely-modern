@@ -1,26 +1,25 @@
-import React from 'react';
-import LogoutOtherBrowserSessions from '@/Pages/Profile/Partials/LogoutOtherBrowserSessionsForm';
-import UpdatePasswordForm from '@/Pages/Profile/Partials/UpdatePasswordForm';
-import UpdateProfileInformationForm from '@/Pages/Profile/Partials/UpdateProfileInformationForm';
-import useTypedPage from '@/Hooks/useTypedPage';
-import AppLayout from '@/Layouts/AppLayout';
-import { Session } from '@/types';
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
+import LogoutOtherBrowserSessions from '@/Pages/Profile/Partials/LogoutOtherBrowserSessionsForm'
+import UpdatePasswordForm from '@/Pages/Profile/Partials/UpdatePasswordForm'
+import UpdateProfileInformationForm from '@/Pages/Profile/Partials/UpdateProfileInformationForm'
+import type { Session } from '@/types'
 
 interface Props {
-  sessions: Session[];
-  confirmsTwoFactorAuthentication: boolean;
+	sessions: Session[]
 }
 
-export default function Show({
-  sessions,
-  confirmsTwoFactorAuthentication,
-}: Props) {
-  return (
-    <AuthenticatedLayout title='Setting'>
-      <UpdateProfileInformationForm />
-      <UpdatePasswordForm />
-      <LogoutOtherBrowserSessions sessions={sessions} />
-    </AuthenticatedLayout>
-  );
+function Show({ sessions }: Props) {
+	return (
+		<>
+			<UpdateProfileInformationForm />
+			<UpdatePasswordForm />
+			<LogoutOtherBrowserSessions sessions={sessions} />
+		</>
+	)
 }
+
+Show.layout = (page: React.ReactNode) => (
+	<AuthenticatedLayout title="Profile">{page}</AuthenticatedLayout>
+)
+
+export default Show

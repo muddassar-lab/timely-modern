@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
-use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -18,9 +17,10 @@ class User extends Authenticatable implements MustVerifyEmail
 
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory;
+
+    use HasUuids;
     use Notifiable;
     use TwoFactorAuthenticatable;
-    use HasUuids;
 
     protected $primaryKey = 'uuid';
 
@@ -36,7 +36,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'status',
         'password',
         'remember_token',
-        'date_of_birth'
+        'date_of_birth',
     ];
 
     /**
@@ -62,7 +62,7 @@ class User extends Authenticatable implements MustVerifyEmail
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'status' => UserStatus::class,
-            'date_of_birth' => 'date'
+            'date_of_birth' => 'date',
         ];
     }
 }
