@@ -1,6 +1,5 @@
 import React from 'react';
 import LogoutOtherBrowserSessions from '@/Pages/Profile/Partials/LogoutOtherBrowserSessionsForm';
-import TwoFactorAuthenticationForm from '@/Pages/Profile/Partials/TwoFactorAuthenticationForm';
 import UpdatePasswordForm from '@/Pages/Profile/Partials/UpdatePasswordForm';
 import UpdateProfileInformationForm from '@/Pages/Profile/Partials/UpdateProfileInformationForm';
 import useTypedPage from '@/Hooks/useTypedPage';
@@ -20,6 +19,7 @@ export default function Show({
   return (
     <AuthenticatedLayout title='Setting'>
       <UpdateProfileInformationForm />
+      <UpdatePasswordForm />
       <LogoutOtherBrowserSessions sessions={sessions} />
     </AuthenticatedLayout>
   );

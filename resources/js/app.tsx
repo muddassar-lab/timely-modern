@@ -26,7 +26,7 @@ void createInertiaApp({
         // noinspection TypeScriptValidateTypes
         return root.render(
             <RouteContext.Provider value={(window as any).route}>
-                <ThemeProvider defaultTheme='dark'>
+                <ThemeProvider defaultTheme='light'>
                     <App {...props} />
                 </ThemeProvider>
             </RouteContext.Provider>,

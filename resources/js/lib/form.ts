@@ -49,7 +49,6 @@ const useCustomForm = <S extends z.ZodSchema>({ schema, values, callback }: Prop
     // Set errors from Inertia form to hook form if they exist
     useEffect(() => {
         const errors = inertiaForm.errors;
-
         if (Object.keys(errors).length > 0) {
             for (const [key, message] of Object.entries(errors)) {
                 hookForm.setError(key as Path<z.infer<S>>, { type: 'server', message });
